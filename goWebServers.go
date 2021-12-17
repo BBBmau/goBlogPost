@@ -45,6 +45,7 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	route := mux.NewRouter()
 
+	route.HandleFunc("/", homeHandler)
 	route.HandleFunc("/home", homeHandler)
 	route.HandleFunc("/about", aboutHandler)
 	route.HandleFunc("/blog", blogHandler)
