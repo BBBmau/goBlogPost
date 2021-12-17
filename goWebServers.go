@@ -1,33 +1,35 @@
 package main
 
 import (
-	"embed"
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
+	"text/template"
+
+	"github.com/gorilla/mux"
 )
 
-var tplFolder embed.FS
+func handler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/blogPage.html")
 
-//var blogPage []byte
-
-func indexHanlder(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles(tplFolder, "templates/blogPage.html")
 	if err != nil {
 		log.Fatal(err)
 	}
-	println("Embedded the blogPage File")
+
 	tmpl.Execute(w, nil)
+	fmt.Printf("In Handler!")
 }
 
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", indexHanlder)
+	route := mux.NewRouter()
 
-	fmt.Printf("Starting server at port 8000\n")
-	err := http.ListenAndServe(":8000", mux)
+	route.HandleFunc("/blogPage", handler)
+	fmt.Printf("Server up!\n")
+
+	err := http.ListenAndServe(":8000", route)
+
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
