@@ -9,7 +9,29 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/homePage.html")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tmpl.Execute(w, nil)
+	fmt.Printf("In homeHandler!\n")
+}
+
+func aboutHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/aboutPage.html")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tmpl.Execute(w, nil)
+	fmt.Printf("In aboutHandler!\n")
+}
+
+func blogHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("templates/blogPage.html")
 
 	if err != nil {
@@ -17,13 +39,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl.Execute(w, nil)
-	fmt.Printf("In Handler!")
+	fmt.Printf("In blogHandler!")
 }
 
 func main() {
 	route := mux.NewRouter()
 
-	route.HandleFunc("/blogPage", handler)
+	route.HandleFunc("/home", homeHandler)
+	route.HandleFunc("/about", aboutHandler)
+	route.HandleFunc("/blog", blogHandler)
 	fmt.Printf("Server up!\n")
 
 	err := http.ListenAndServe(":8000", route)
