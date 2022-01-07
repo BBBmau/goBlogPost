@@ -1,8 +1,10 @@
 # syntax=docker/dockerfile:1
-FROM node:12-alpine
-RUN apk add --no-cache python2 g++ make
+FROM golang:1.16-alpine
 WORKDIR /BlogWebsite
-COPY . .
-RUN yarn install --production
-CMD ["node", "src/index.js"]
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
+COPY *.go ./
+RUN go build -o /docker-gs-ping
+CMD ["/docker-gs-ping"]
 
