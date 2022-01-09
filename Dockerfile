@@ -1,10 +1,8 @@
 # syntax=docker/dockerfile:1
 FROM golang:1.16-alpine
 WORKDIR /BlogWebsite
-COPY go.mod ./
-COPY go.sum ./
+COPY goWebServers.go go.mod go.sum ./
 RUN go mod download
-COPY *.go ./
-RUN go build -o /docker-gs-ping
-CMD ["/docker-gs-ping"]
+
+CMD ["go", "run", "goWebServers.go"]
 
