@@ -57,6 +57,16 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
+func commaHandler(w http.ResponseWriter, r *http.Request) {
+
+	tmpl, err := template.ParseFS(tp1Folder, "templates/comma_hack.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	println("Embedded comma_hack.html")
+	tmpl.Execute(w, nil)
+}
+
 func main() {
 	assetsFS := http.FileServer(http.FS(assets))
 	route := http.NewServeMux()
@@ -64,6 +74,7 @@ func main() {
 	route.HandleFunc("/home", homeHandler)
 	route.HandleFunc("/about", aboutHandler)
 	route.HandleFunc("/blog", blogHandler)
+	route.HandleFunc("/comma_hack", commaHandler)
 
 	//route.Handle("comma.png")
 
